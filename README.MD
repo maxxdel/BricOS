@@ -35,3 +35,5 @@ This project aims only to make me learn neww stuff about boot, etc. So it will b
 
 ### Free ?
 Do whatever the F you want with this project, I don't care
+
+![Alt text](./BarryLinux.jpeg)
