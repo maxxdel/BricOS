@@ -90,11 +90,6 @@ mainloop:
 	call strcmp
 	jc .mv
 
-	;mov si, buffer
-	;mov di, cmd_ls
-	;call strcmp
-	;jc .ls
-
 	mov si, badcommand
 	call print_string
 	jmp mainloop
