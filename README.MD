@@ -31,7 +31,7 @@ Only assembly code (around 550 lines today). Why ? because it is funny
 Because of our teacher, that always said we were "bricoleurs", I thought we needed an OS like that.
 
 ### Future
-This project aims only to make me learn neww stuff about boot, etc. So it will be maintained and upgraded as long as I need to learn stuff.
+This project aims only to make me learn new stuff about boot, etc. So it will be maintained and upgraded as long as I need to learn stuff.
 
 ### Free ?
 Do whatever the F you want with this project, I don't care

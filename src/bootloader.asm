@@ -32,7 +32,23 @@ gdt_descriptor:
     dw gdt_end - gdt_start - 1
     dd gdt_start
 
-cli
+mov bx, 0x0000
+mov ax, 0x1000
+mov es, ax
+mov ah, 0x02  
+mov al, 10    
+mov ch, 0     
+mov cl, 2     
+mov dh, 0     
+mov dl, 0x80
+int 0x13
+jc disk_error
+
+disk_error:
+    cli
+    hlt
+    jmp disk_error
+
 lgdt [gdt_descriptor]
 mov eax, cr0
 or eax, 0x1
@@ -52,7 +68,8 @@ protected_mode_start:
 
     mov esp, 0x9FC00
 
-	jmp 0x100000
+	jmp 0x08:0x100000
+    int 0x13 ; wesh
 
 hang:
     jmp hang
