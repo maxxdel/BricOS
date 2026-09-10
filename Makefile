@@ -1,35 +1,17 @@
-# Makefile for 16-bit OS project using NASM
-# Bric'OS forever
-# BRICOLEUW
+# J'ai eu des galères en boosant sur mac, refaire un makefile clean à la fin
+# Juste là c'est plus lisible/modifiable si je dois changer d'outil
+# Et comme une fois sur deux ça marche pas faut que j'isole les commandes, mais c'est pas ma prio
+# TODO: Refaire un magnifique makefile
 
-# CONFIG
-
-NASM = nasm
-ASFLAGS = -f bin
-
-BOOT_SRC = ./src/bootloader.asm
-KERNEL_SRC = ./src/kernel.asm
-
-BOOT_BIN = ./bin/bootloader.bin
-KERNEL_BIN = ./bin/kernel.bin
-IMG = ./bin/os.img
-
-BIN_DIR=./bin
-
-
-all: $(IMG)
-
-$(BOOT_BIN): $(BOOT_SRC)
-	$(NASM) $(ASFLAGS) $< -o $@
-
-$(KERNEL_BIN): $(KERNEL_SRC)
-	$(NASM) $(ASFLAGS) $< -o $@
-
-$(IMG): $(BOOT_BIN) $(KERNEL_BIN)
-	cat $(BOOT_BIN) $(KERNEL_BIN) > $(IMG)
+all: 
+	nasm -f bin ./src/bootloader.asm -o ./bin/bootloader.bin
+	nasm ./src/kernel_entry.asm -f elf -o ./bin/kernel_entry.o
+	i686-elf-gcc -ffreestanding -c ./src/kernel.c -o ./bin/kernel.o
+	i686-elf-ld -o ./bin/kernel.bin -Ttext 0x1000 ./bin/kernel_entry.o ./bin/kernel.o --oformat binary
+	cat ./bin/bootloader.bin ./bin/kernel.bin > ./bin/os.img
 
 clean:
-	rm -f $(BIN_DIR)/*
+	rm -rf ./bin/*
 
-run: $(IMG)
-	qemu-system-i386 -fda $(IMG)
+run:
+	qemu-system-i386 ./bin/os.img
