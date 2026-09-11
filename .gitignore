@@ -3,3 +3,4 @@ kernel.bin
 os.img
 bin
 old
+.DS_Store

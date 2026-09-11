@@ -1,4 +1,4 @@
-# J'ai eu des galères en boosant sur mac, refaire un makefile clean à la fin
+# J'ai eu des galères en bossant sur mac, refaire un makefile clean à la fin
 # Juste là c'est plus lisible/modifiable si je dois changer d'outil
 # Et comme une fois sur deux ça marche pas faut que j'isole les commandes, mais c'est pas ma prio
 # TODO: Refaire un magnifique makefile
@@ -8,7 +8,9 @@ all:
 	nasm ./src/kernel_entry.asm -f elf -o ./bin/kernel_entry.o
 	i686-elf-gcc -ffreestanding -c ./src/kernel.c -o ./bin/kernel.o
 	i686-elf-ld -o ./bin/kernel.bin -Ttext 0x1000 ./bin/kernel_entry.o ./bin/kernel.o --oformat binary
-	cat ./bin/bootloader.bin ./bin/kernel.bin > ./bin/os.img
+#Pour remplir le kernel pendant les tests
+	dd if=./bin/kernel.bin of=./bin/kernel_padded.bin bs=512 conv=sync
+	cat ./bin/bootloader.bin ./bin/kernel_padded.bin > ./bin/os.img
 
 clean:
 	rm -rf ./bin/*
