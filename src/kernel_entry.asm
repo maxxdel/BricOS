@@ -1,5 +1,5 @@
 [BITS 32]
-[extern main]
+[extern bwicole]
 
-call main
+call bwicole
 jmp $

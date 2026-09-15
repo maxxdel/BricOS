@@ -39,7 +39,7 @@ load_kernel:
 	mov es, ax
 
 	mov bx, KERNEL_OFFSET
-	mov dh, 1 ; secteur de lecture
+	mov dh, 15 ; secteur lus -> modifier truncate dans makefile
 	mov dl, [BOOT_DRIVE]
 	call disk_load
 	ret
@@ -48,8 +48,6 @@ load_kernel:
 %include "./src/gdt.asm"
 %include "./src/disk_load.asm"
 %include "./src/print_pm.asm"
-
-; TODO: Inclure le kernel_entry.asm et le call
 
 [BITS 32]
 

@@ -10,6 +10,8 @@ all:
 	i686-elf-ld -o ./bin/kernel.bin -Ttext 0x1000 ./bin/kernel_entry.o ./bin/kernel.o --oformat binary
 #Pour remplir le kernel pendant les tests
 	dd if=./bin/kernel.bin of=./bin/kernel_padded.bin bs=512 conv=sync
+# Voir ligne 42 bootloader
+	truncate -s 7680 ./bin/kernel_padded.bin
 	cat ./bin/bootloader.bin ./bin/kernel_padded.bin > ./bin/os.img
 
 clean:

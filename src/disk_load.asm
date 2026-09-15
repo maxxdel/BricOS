@@ -1,5 +1,4 @@
 disk_load:
-
     push dx
 
     mov ah, 0x02
@@ -15,15 +14,18 @@ disk_load:
     pop dx
     ret
 
-
 disk_error:
     pop dx
 
     mov si, disk_error_msg
 
+.done:
+    hlt
+
 .print_error:
     lodsb
     cmp al, 0
+    je .done
 
     mov ah, 0x0E
     int 0x10
