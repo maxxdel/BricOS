@@ -16,7 +16,7 @@ void idt_set_descriptor(int num, unsigned int isr, unsigned char flags){
 }
 
 void set_idt(){
-    idtr.limit = (unsigned int)(IDT_ENTRIES * sizeof(IdtEntry) -1);
-    idtr.base = (unsigned short)&idt;
+    idtr.limit = (unsigned short)(IDT_ENTRIES * sizeof(IdtEntry) -1);
+    idtr.base = (unsigned int)&idt;
     __asm__ volatile ("lidt %0" : : "m"(idtr));
 }

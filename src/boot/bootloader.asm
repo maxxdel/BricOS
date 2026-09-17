@@ -45,9 +45,9 @@ load_kernel:
 	ret
 
 
-%include "./src/gdt.asm"
-%include "./src/disk_load.asm"
-%include "./src/print_pm.asm"
+%include "./src/boot/gdt.asm"
+%include "./src/boot/disk_load.asm"
+%include "./src/boot/print_pm.asm"
 
 [BITS 32]
 
