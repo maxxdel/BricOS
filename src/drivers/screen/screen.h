@@ -1,3 +1,5 @@
+#pragma once
+
 #define VIDEO_MEMORY 0xb8000
 #define SCREEN_HEIGHT 25
 #define SCREEN_WIDTH 80

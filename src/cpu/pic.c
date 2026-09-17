@@ -1,6 +1,8 @@
 #include "pic.h"
 #include "./ports/ports.h"
 
+static IrqHandler irqRoutines[16] = {0};
+
 void pic_remap(){
     port_byte_out(PIC_MASTER_COMMAND, ICW1_INIT | ICW1_ICW4);
     io_wait();
@@ -28,4 +30,16 @@ void pic_send_end_of_interrupt(unsigned char irq){
     }
     
     port_byte_out(PIC_MASTER_COMMAND, PIC_EOI);
+}
+
+void irq_install_handler(int irq, IrqHandler handler){
+    irqRoutines[irq] = handler;
+}
+
+void irq_handler(Registers *regs){
+    unsigned char irqNumber = regs->intNo - 32;
+    if (irqRoutines[irqNumber] != 0){
+        irqRoutines[irqNumber](regs);
+    }
+    pic_send_end_of_interrupt(irqNumber);
 }

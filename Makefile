@@ -1,14 +1,28 @@
-# J'ai eu des galères en bossant sur mac, refaire un makefile clean à la fin
-# Juste là c'est plus lisible/modifiable si je dois changer d'outil
-# Et comme une fois sur deux ça marche pas faut que j'isole les commandes, mais c'est pas ma prio
-# TODO: Refaire un magnifique makefile
+CC = i686-elf-gcc
+CFLAGS = -ffreestanding -Wall -Wextra
+LD = i686-elf-ld
+NASM = nasm
 
-all: 
-	nasm -f bin ./src/bootloader.asm -o ./bin/bootloader.bin
-	nasm ./src/kernel_entry.asm -f elf -o ./bin/kernel_entry.o
-	i686-elf-gcc -ffreestanding -c ./src/kernel.c -o ./bin/kernel.o
-	i686-elf-gcc -ffreestanding -c ./src/kernel.c -o ./bin/kernel.o
-	i686-elf-ld -o ./bin/kernel.bin -Ttext 0x1000 ./bin/kernel_entry.o ./bin/kernel.o --oformat binary
+all:
+	$(NASM) -f bin ./src/boot/bootloader.asm -o ./bin/bootloader.bin
+	$(NASM) ./src/boot/kernel_entry.asm -f elf -o ./bin/kernel_entry.o
+	$(NASM) ./src/cpu/isr.asm -f elf -o ./bin/isr.o
+	$(CC) $(CFLAGS) -c ./src/kernel/kernel.c -o ./bin/kernel.o
+	$(CC) $(CFLAGS) -c ./src/cpu/idt.c -o ./bin/idt.o
+	$(CC) $(CFLAGS) -c ./src/cpu/pic.c -o ./bin/pic.o
+	$(CC) $(CFLAGS) -c ./src/cpu/ports/ports.c -o ./bin/ports.o
+	$(CC) $(CFLAGS) -c ./src/drivers/screen/screen.c -o ./bin/screen.o
+	$(CC) $(CFLAGS) -c ./src/memory/mem.c -o ./bin/mem.o
+	$(LD) -o ./bin/kernel.bin -Ttext 0x1000 \
+		./bin/kernel_entry.o \
+		./bin/kernel.o \
+		./bin/idt.o \
+		./bin/pic.o \
+		./bin/ports.o \
+		./bin/screen.o \
+		./bin/mem.o \
+		./bin/isr.o \
+		--oformat binary
 #Pour remplir le kernel pendant les tests
 	dd if=./bin/kernel.bin of=./bin/kernel_padded.bin bs=512 conv=sync
 # Voir ligne 42 bootloader
