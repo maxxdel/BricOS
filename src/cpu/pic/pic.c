@@ -1,5 +1,6 @@
 #include "pic.h"
-#include "./ports/ports.h"
+#include "../ports/ports.h"
+#include "../../kernel/utils/utils.h"
 
 static IrqHandler irqRoutines[16] = {0};
 

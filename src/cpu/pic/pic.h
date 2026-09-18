@@ -1,6 +1,6 @@
 #pragma once
 
-#include "idt.h"
+#include "../idt/idt.h"
 
 // Programmable Interrupt Controller: https://wiki.osdev.org/8259_PIC
 // Faut que je rebosse cette partie pour bien comprendre les controlleurs PIC

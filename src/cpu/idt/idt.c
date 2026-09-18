@@ -1,5 +1,5 @@
 #include "idt.h"
-#include "../drivers/screen/screen.h"
+#include "../../drivers/screen/screen.h"
 
 __attribute__((aligned(0x10)))
 IdtEntry idt[IDT_ENTRIES];
