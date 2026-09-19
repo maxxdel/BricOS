@@ -7,16 +7,15 @@
 #include "../drivers/keyboard/keyboard.h"
 
 void bricole(){
-    int cursorPosition = 0;
-
     idt_install();
     pic_remap();
     __asm__ volatile ("sti");
-
     clear_screen();
-    printf("Bric'OS 32bits incoming", 0, 0);
-    cursorPosition = printf("...Petit Bricoleuw", 0, 1);
-    set_cursor(cursorPosition);
+    printf("Bric'OS 32bits incoming");
+    print_char('\n');
+    printf("...Petit Bricoleuw");
+    print_char('\n');
+    print_char('\n');
     init_timer(50);
     init_keyboard();
 }

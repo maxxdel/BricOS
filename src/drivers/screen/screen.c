@@ -20,19 +20,23 @@ void clear_screen(){
         videoMemory[i] = ' ';
         videoMemory[i + 1] = WHITE_ON_BLACK;
     }
+    set_cursor(0);
 }
 
-int printf(const char *str, int colonne, int ligne){
-    //TODO : Enelever colonne et ligne et tout gérer avec get_cursor()
+int printf(const char *str){
     char *videoMemory = (char *) VIDEO_MEMORY;
     int i = 0;
-    int offset = (ligne * SCREEN_WIDTH + colonne) *2;
+    int offset;
+
+    offset = get_cursor();
+    offset = doom_scroll(offset);
 
     while (str[i] != '\0'){
         videoMemory[offset + i * 2] = str[i];
         videoMemory[offset + i * 2 + 1] = WHITE_ON_BLACK;
         i++;
     }
+    set_cursor(offset + i *2);
     return(offset + i * 2);
 }
 

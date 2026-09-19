@@ -43,3 +43,20 @@ int strlen(char string[]){
     }
     return length;
 }
+
+int compare_strings(char *a, char *b){
+    int i = 0;
+    
+    if(strlen(a) != strlen(b)){
+        return 0;
+    }
+
+    for (i = 0; a[i] != '\0'; i++){
+
+        if(a[i] != b[i]){
+            return 0; 
+        }
+    }
+
+    return 1;
+}

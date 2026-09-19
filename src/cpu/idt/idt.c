@@ -100,7 +100,7 @@ void idt_install(){
 }
 
 void isr_handler(Registers *regs){
-    printf(exceptionMessages[regs->intNo], 0, 0);
+    printf(exceptionMessages[regs->intNo]);
 
     for(;;){
         __asm__ volatile ("hlt");
