@@ -9,11 +9,9 @@
 #define VGA_DATA_PORT 0x3D5
 
 void set_cursor(int offset);
-
 int get_screen_offset(int colonne, int ligne);
-
 void clear_screen(void);
-
 int printf(const char *str, int colonne, int ligne);
-
 int doom_scroll(int cursorOffset);
+int get_cursor(void);
+void print_char(char letter);

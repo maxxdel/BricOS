@@ -10,11 +10,11 @@ unsigned int tick = 0;
 
 static void timer_callback(Registers *regs){
     tick ++;
-    printf("Tick: ", 0, 3);
+//    printf("Tick: ", 0, 3);
 
     char ticksToAscii[256];
     int_to_string(tick, ticksToAscii);
-    printf(ticksToAscii, 7, 3);
+//    printf(ticksToAscii, 7, 3);
 }
 
 void init_timer(unsigned int frequency){
@@ -28,5 +28,5 @@ void init_timer(unsigned int frequency){
     port_byte_out(PIT_DATA_0, low);
     port_byte_out(PIT_DATA_0, high);
 
-    printf("Timer initialized successfully", 0, 3);
+    //printf("Timer initialized successfully", 0, 3);
 }

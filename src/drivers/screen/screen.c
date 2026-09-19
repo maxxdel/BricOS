@@ -22,10 +22,8 @@ void clear_screen(){
     }
 }
 
-// TODO: Faire une fonction print_char()
-
 int printf(const char *str, int colonne, int ligne){
-    // TODO: call doomscroll si last position
+    //TODO : Enelever colonne et ligne et tout gérer avec get_cursor()
     char *videoMemory = (char *) VIDEO_MEMORY;
     int i = 0;
     int offset = (ligne * SCREEN_WIDTH + colonne) *2;
@@ -60,4 +58,41 @@ int doom_scroll(int cursorOffset){
     cursorOffset -= 2 * SCREEN_WIDTH;
 
     return cursorOffset;
+}
+
+int get_cursor(){
+    int offset; 
+    unsigned char offsetHigh, offsetLow;
+
+    port_byte_out(VGA_INDEX_PORT, 14);
+    offsetHigh = port_byte_in(VGA_DATA_PORT);
+    port_byte_out(VGA_INDEX_PORT, 15);
+    offsetLow = port_byte_in(VGA_DATA_PORT);
+
+    offset = (((unsigned char)offsetHigh << 8) | offsetLow) * 2;
+
+    return offset;
+}
+
+void print_char(char letter){
+    char *videoMemory = (char *) VIDEO_MEMORY;
+    int cursorOffset;
+
+    cursorOffset = get_cursor();
+    cursorOffset = doom_scroll(cursorOffset);
+
+    if (letter == '\n'){
+        cursorOffset = cursorOffset - (cursorOffset % (SCREEN_WIDTH * 2)) + (SCREEN_WIDTH * 2);
+        cursorOffset = doom_scroll(cursorOffset);
+    }
+    
+    else{
+    videoMemory[cursorOffset] = letter;
+    videoMemory[cursorOffset +1] = WHITE_ON_BLACK;
+
+    cursorOffset += 2;
+    cursorOffset = doom_scroll(cursorOffset);
+    }
+
+    set_cursor(cursorOffset);
 }

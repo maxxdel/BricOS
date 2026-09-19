@@ -1,6 +1,6 @@
 #pragma once
 
-#define IRQ_TIMER               32
+#define IRQ_TIMER               0
 #define PIT_DATA_0              0x40
 #define PIT_DATA_1              0x41
 #define PIT_DATA_2              0x42

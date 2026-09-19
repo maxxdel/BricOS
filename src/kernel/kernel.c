@@ -1,9 +1,10 @@
 #include "../memory/mem.h"
 #include "../cpu/ports/ports.h"
-#include "../drivers/screen/screen.h"
 #include "../cpu/idt/idt.h"
 #include "../cpu/pic/pic.h"
 #include "../cpu/pit/pit.h"
+#include "../drivers/screen/screen.h"
+#include "../drivers/keyboard/keyboard.h"
 
 void bricole(){
     int cursorPosition = 0;
@@ -17,4 +18,5 @@ void bricole(){
     cursorPosition = printf("...Petit Bricoleuw", 0, 1);
     set_cursor(cursorPosition);
     init_timer(50);
+    init_keyboard();
 }
