@@ -15,3 +15,4 @@ int printf(const char *str, int colonne, int ligne);
 int doom_scroll(int cursorOffset);
 int get_cursor(void);
 void print_char(char letter);
+void erase_char(void);

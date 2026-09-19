@@ -15,6 +15,7 @@ all:
 	$(CC) $(CFLAGS) -c ./src/cpu/pit/pit.c -o ./bin/pit.o
 	$(CC) $(CFLAGS) -c ./src/drivers/screen/screen.c -o ./bin/screen.o
 	$(CC) $(CFLAGS) -c ./src/drivers/keyboard/keyboard.c -o ./bin/keyboard.o
+	$(CC) $(CFLAGS) -c ./src/drivers/keyboard/shell.c -o ./bin/shell.o
 	$(CC) $(CFLAGS) -c ./src/memory/mem.c -o ./bin/mem.o
 	$(LD) -o ./bin/kernel.bin -Ttext 0x1000 \
 		./bin/kernel_entry.o \
@@ -26,6 +27,7 @@ all:
 		./bin/ports.o \
 		./bin/screen.o \
 		./bin/keyboard.o \
+		./bin/shell.o \
 		./bin/mem.o \
 		./bin/isr.o \
 		--oformat binary

@@ -1,4 +1,5 @@
 #include "keyboard.h"
+#include "shell.h"
 #include "../../cpu/pic/pic.h"
 #include "../../cpu/ports/ports.h"
 #include "../../drivers/screen/screen.h"
@@ -8,13 +9,14 @@ static int shiftPressed = 0;
 static void keyboard_callback(Registers *regs){
     unsigned char scancode = port_byte_in(KEYBOARD_DATA_PORT);
 
-    if(scancode == SCANCODE_LEFT_SHIFT_PRESS | scancode == SCANCODE_RIGHT_SHIFT_PRESS){
+    if(scancode == SCANCODE_LEFT_SHIFT_PRESS || scancode == SCANCODE_RIGHT_SHIFT_PRESS){
         shiftPressed = 1;
         return;
     }
 
-    else if(scancode == SCANCODE_LEFT_SHIFT_RELEASE | scancode == SCANCODE_RIGHT_SHIFT_RELEASE){
+    else if(scancode == SCANCODE_LEFT_SHIFT_RELEASE || scancode == SCANCODE_RIGHT_SHIFT_RELEASE){
         shiftPressed = 0;
+        return;
     }
 
     else if(scancode & 0x80){
@@ -22,13 +24,12 @@ static void keyboard_callback(Registers *regs){
     }
 
     else if(scancode == SCANCODE_BACKSPACE){
-        // Call la fonction de backspace qu'on setup plus tard dans shell
+        shell_backspace();
         return;
     }
     
     else if (scancode == SCANCODE_ENTER){
-        print_char('\n');
-        // Dire au buffer dans shell de mettre fin à la ligne avec "\0", et appeler la commande
+        shell_enter();
         return;
     }
 
@@ -49,7 +50,7 @@ static void keyboard_callback(Registers *regs){
         else if(shiftPressed == 0){
             letter = scanCodeToAsciiAzerty[(int)scancode];
         }
-        print_char(letter);
+        shell_put_char(letter);
         return;
     }
 }

@@ -96,3 +96,14 @@ void print_char(char letter){
 
     set_cursor(cursorOffset);
 }
+
+void erase_char(){
+    char *videoMemory = (char *) VIDEO_MEMORY;
+    int cursorOffset;
+
+    cursorOffset = get_cursor() - 2;
+    videoMemory[cursorOffset] = ' ';
+    videoMemory[cursorOffset + 1] = WHITE_ON_BLACK;
+
+    set_cursor(cursorOffset);
+}
