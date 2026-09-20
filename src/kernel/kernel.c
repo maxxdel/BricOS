@@ -3,6 +3,7 @@
 #include "../cpu/idt/idt.h"
 #include "../cpu/pic/pic.h"
 #include "../cpu/pit/pit.h"
+#include "../cpu/ata/ata.h"
 #include "../drivers/screen/screen.h"
 #include "../drivers/keyboard/keyboard.h"
 
@@ -18,4 +19,6 @@ void bricole(){
     print_char('\n');
     init_timer(50);
     init_keyboard();
+    //unsigned short buffer[256];
+    //ata_read_sector(0, 1, buffer);
 }

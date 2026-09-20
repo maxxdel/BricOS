@@ -13,6 +13,7 @@ all:
 	$(CC) $(CFLAGS) -c ./src/cpu/pic/pic.c -o ./bin/pic.o
 	$(CC) $(CFLAGS) -c ./src/cpu/ports/ports.c -o ./bin/ports.o
 	$(CC) $(CFLAGS) -c ./src/cpu/pit/pit.c -o ./bin/pit.o
+	$(CC) $(CFLAGS) -c ./src/cpu/ata/ata.c -o ./bin/ata.o
 	$(CC) $(CFLAGS) -c ./src/drivers/screen/screen.c -o ./bin/screen.o
 	$(CC) $(CFLAGS) -c ./src/drivers/keyboard/keyboard.c -o ./bin/keyboard.o
 	$(CC) $(CFLAGS) -c ./src/drivers/keyboard/shell.c -o ./bin/shell.o
@@ -24,6 +25,7 @@ all:
 		./bin/idt.o \
 		./bin/pic.o \
 		./bin/pit.o \
+		./bin/ata.o \
 		./bin/ports.o \
 		./bin/screen.o \
 		./bin/keyboard.o \
