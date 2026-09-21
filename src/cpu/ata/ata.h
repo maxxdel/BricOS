@@ -24,3 +24,4 @@
 #define ATA_STATUS_BSY  0x80  
 
 void ata_read_sector(unsigned int lba, unsigned char sectorCount, unsigned short *buffer);
+void ata_write_sector(unsigned int lba, unsigned char sectorCount, unsigned short *buffer);
