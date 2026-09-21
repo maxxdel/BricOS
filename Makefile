@@ -36,11 +36,11 @@ all:
 #Pour remplir le kernel pendant les tests
 	dd if=./bin/kernel.bin of=./bin/kernel_padded.bin bs=512 conv=sync
 # Voir ligne 42 bootloader
-	truncate -s 7680 ./bin/kernel_padded.bin
+	truncate -s 15360 ./bin/kernel_padded.bin
 	cat ./bin/bootloader.bin ./bin/kernel_padded.bin > ./bin/os.img
 
 clean:
 	rm -rf ./bin/*
 
 run:
-	qemu-system-i386 ./bin/os.img
+	qemu-system-i386 -no-reboot -d int,cpu_reset ./bin/os.img

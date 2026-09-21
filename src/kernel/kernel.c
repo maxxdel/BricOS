@@ -19,6 +19,6 @@ void bricole(){
     print_char('\n');
     init_timer(50);
     init_keyboard();
-    //unsigned short buffer[256];
-    //ata_read_sector(0, 1, buffer);
+    unsigned short buffer[256];
+    ata_read_sector(0, 1, buffer);
 }

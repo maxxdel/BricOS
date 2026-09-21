@@ -39,7 +39,7 @@ load_kernel:
 	mov es, ax
 
 	mov bx, KERNEL_OFFSET
-	mov dh, 15 ; secteur lus -> modifier truncate dans makefile
+	mov dh, 30 ; secteur lus -> modifier truncate dans makefile
 	mov dl, [BOOT_DRIVE]
 	call disk_load
 	ret
