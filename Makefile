@@ -14,6 +14,7 @@ all:
 	$(CC) $(CFLAGS) -c ./src/cpu/ports/ports.c -o ./bin/ports.o
 	$(CC) $(CFLAGS) -c ./src/cpu/pit/pit.c -o ./bin/pit.o
 	$(CC) $(CFLAGS) -c ./src/cpu/ata/ata.c -o ./bin/ata.o
+	$(CC) $(CFLAGS) -c ./src/cpu/fat/fat32.c -o ./bin/fat32.o
 	$(CC) $(CFLAGS) -c ./src/drivers/screen/screen.c -o ./bin/screen.o
 	$(CC) $(CFLAGS) -c ./src/drivers/keyboard/keyboard.c -o ./bin/keyboard.o
 	$(CC) $(CFLAGS) -c ./src/drivers/keyboard/shell.c -o ./bin/shell.o
@@ -26,6 +27,7 @@ all:
 		./bin/pic.o \
 		./bin/pit.o \
 		./bin/ata.o \
+		./bin/fat32.o \
 		./bin/ports.o \
 		./bin/screen.o \
 		./bin/keyboard.o \
@@ -33,11 +35,15 @@ all:
 		./bin/mem.o \
 		./bin/isr.o \
 		--oformat binary
-#Pour remplir le kernel pendant les tests
+# Pour remplir le kernel pendant les tests
 	dd if=./bin/kernel.bin of=./bin/kernel_padded.bin bs=512 conv=sync
 # Voir ligne 42 bootloader
 	truncate -s 15360 ./bin/kernel_padded.bin
 	cat ./bin/bootloader.bin ./bin/kernel_padded.bin > ./bin/os.img
+# Test pour FAT32	
+	dd if=/dev/zero of=./bin/fat32.img bs=1m count=64
+	mkfs.fat -F 32 -n "BRICOS" ./bin/fat32.img
+	dd if=./bin/fat32.img of=./bin/os.img bs=512 seek=2048 conv=notrunc
 
 clean:
 	rm -rf ./bin/*
