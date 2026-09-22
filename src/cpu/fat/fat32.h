@@ -2,7 +2,8 @@
 
 // https://wiki.osdev.org/FAT#FAT_32
 
-#define FAT32_PARTITION_START_LBA 2048
+#define FAT32_PARTITION_START_LBA   2048
+#define FAT32_END_OF_CHAIN          0xFFFFFFF8
 
 typedef struct BOOT_SECTOR Fat32BootSector;
 struct BOOT_SECTOR{
@@ -36,3 +37,4 @@ struct BOOT_SECTOR{
 }__attribute__((packed));
 
 void fat32_init(void);
+unsigned int fat32_get_next_cluster(unsigned int cluster);

@@ -27,8 +27,11 @@ void bricole(){
     // ata_write_sector(27, 1, writeBuffer);
     // unsigned short buffer[256];
     // ata_read_sector(27, 1, buffer);
-    // char randomChar[100];
+    char randomChar[100];
     // int_to_string(buffer[256], randomChar);
     // printf(randomChar);
     fat32_init();
+    unsigned int test = fat32_get_next_cluster(1);
+    int_to_string(test, randomChar);
+    printf(randomChar);
 }
