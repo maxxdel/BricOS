@@ -60,3 +60,7 @@ int compare_strings(char *a, char *b){
 
     return 1;
 }
+
+char to_upper(char c) {
+    return (c >= 'a' && c <= 'z') ? c - 32 : c;
+}
