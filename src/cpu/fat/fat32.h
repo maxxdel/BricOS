@@ -1,6 +1,7 @@
 #pragma once
 
 // https://wiki.osdev.org/FAT#FAT_32
+// https://wiki.osdev.org/User:Requimrar/FAT32
 
 #define FAT32_PARTITION_START_LBA   2048
 #define FAT32_END_OF_CHAIN          0xFFFFFFF8
@@ -70,7 +71,7 @@ void fat32_list_dir(unsigned int cluster);
 void fat32_get_root_dir(void);
 void fat32_entry_name_to_string(unsigned char rawName[11], char out[13]);
 void fat32_string_to_entry_name(const char *name, unsigned char out[11]);
-int fat32_find_entry(unsigned int dirCluster, const char *name, Fat32DirEntry *outEntry);
+int fat32_find_entry(unsigned int dirCluster, const char *name, Fat32DirEntry *outEntry, unsigned int *outSector, unsigned int *outIndex);
 unsigned int fat32_get_entry_cluster(Fat32DirEntry *entry);
 int fat32_create_file(unsigned int dirCluster, const char *name);
 void fat32_get_root_dir(void);

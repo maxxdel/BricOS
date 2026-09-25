@@ -111,7 +111,7 @@ void fat32_string_to_entry_name(const char *name, unsigned char out[11]){
     }
 }
 
-int fat32_find_entry(unsigned int dirCluster, const char *name, Fat32DirEntry *outEntry){
+int fat32_find_entry(unsigned int dirCluster, const char *name, Fat32DirEntry *outEntry, unsigned int *outSector, unsigned int *outIndex){
     unsigned char entryName[11];
     unsigned short buffer[256];
     unsigned int clusterCount = dirCluster;
@@ -141,6 +141,15 @@ int fat32_find_entry(unsigned int dirCluster, const char *name, Fat32DirEntry *o
                 }
                 if(match){
                     copy_memory((char *) entry, (char *)outEntry, sizeof(Fat32DirEntry));
+
+                    if(outSector){
+                        *outSector = lba + i;
+                    }
+
+                    if(outIndex){
+                        *outIndex = j;
+                    }
+
                     return 1;
                 }
             }
@@ -249,7 +258,7 @@ void fat32_make_entry(Fat32DirEntry *entry, const char *name, unsigned char attr
 int fat32_create_file(unsigned int dirCluster, const char *name){
     Fat32DirEntry checkEntry;
     
-    if(fat32_find_entry(dirCluster, name, &checkEntry)){return 0;}
+    if(fat32_find_entry(dirCluster, name, &checkEntry, 0, 0)){return 0;}
 
     unsigned int cluster = fat32_caf_cluster();
     
@@ -259,4 +268,13 @@ int fat32_create_file(unsigned int dirCluster, const char *name){
     fat32_make_entry(&entry, name, FAT32_ATTR_ARCHIVE, cluster, 0);
 
     return fat32_write_entry_in_dir(dirCluster, &entry);
+}
+
+void fat32_update_entry(unsigned int index, unsigned int sector, Fat32DirEntry *entry){
+    unsigned short buffer[256];
+
+    ata_read_sector(sector, 1, buffer);
+    Fat32DirEntry *entries = (Fat32DirEntry *) buffer;
+    copy_memory((char *) entry, (char *) &entries, sizeof(Fat32DirEntry));
+    ata_write_sector(sector, 1, buffer);
 }
