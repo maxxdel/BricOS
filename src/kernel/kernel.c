@@ -7,6 +7,7 @@
 #include "../cpu/fat/fat32.h"
 #include "../drivers/screen/screen.h"
 #include "../drivers/keyboard/keyboard.h"
+#include "./file/file.h"
 
 void bricole(){
     idt_install();
@@ -20,7 +21,25 @@ void bricole(){
     print_char('\n');
     init_timer(50);
     init_keyboard();
+   
     fat32_init();
     fat32_create_file(bootSector.rootCluster, "TEST.TXT");
+
+    fat32_create_file(bootSector.rootCluster, "HELLO.TXT");
+
+    int fd = file_open(bootSector.rootCluster, "HELLO.TXT");
+    file_write(fd, "Petit bwicoleuw", 21);
+    file_close(fd);
+
+    fd = file_open(bootSector.rootCluster, "HELLO.TXT");
+    char out[32];
+    unsigned int n = file_read(fd, out, 21);
+    out[n] = '\0';
+    file_close(fd);
+
+    printf(out);
     fat32_get_root_dir();
+
+    fat32_create_file(bootSector.rootCluster, "TEST.TXT");
+    fat32_create_file(bootSector.rootCluster, "HELLO.TXT");
 }

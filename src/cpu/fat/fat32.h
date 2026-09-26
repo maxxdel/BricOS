@@ -65,13 +65,22 @@ struct DIR_ENTRY{
 
 extern Fat32BootSector bootSector;
 
-void fat32_init(void);
 unsigned int fat32_get_next_cluster(unsigned int cluster);
+unsigned int fat32_set_next_cluster(unsigned int cluster, unsigned int value);
+unsigned int fat32_cluster_to_LBA(unsigned int cluster);
+unsigned int fat32_get_entry_cluster(Fat32DirEntry *entry);
+unsigned int fat32_get_free_cluster(void);
+unsigned int fat32_caf_cluster(void);
+
+int fat32_find_entry(unsigned int dirCluster, const char *name, Fat32DirEntry *outEntry, unsigned int *outSector, unsigned int *outIndex);
+int fat32_create_file(unsigned int dirCluster, const char *name);
+int fat32_write_entry_in_dir(unsigned int cluster, Fat32DirEntry *newEntry);
+
+void fat32_init(void);
 void fat32_list_dir(unsigned int cluster);
 void fat32_get_root_dir(void);
 void fat32_entry_name_to_string(unsigned char rawName[11], char out[13]);
 void fat32_string_to_entry_name(const char *name, unsigned char out[11]);
-int fat32_find_entry(unsigned int dirCluster, const char *name, Fat32DirEntry *outEntry, unsigned int *outSector, unsigned int *outIndex);
-unsigned int fat32_get_entry_cluster(Fat32DirEntry *entry);
-int fat32_create_file(unsigned int dirCluster, const char *name);
-void fat32_get_root_dir(void);
+void fat32_ziak_cluster(unsigned int startCluster);
+void fat32_make_entry(Fat32DirEntry *entry, const char *name, unsigned char attr, unsigned int cluster, unsigned int size);
+void fat32_update_entry(unsigned int index, unsigned int sector, Fat32DirEntry *entry);

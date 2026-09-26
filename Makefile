@@ -9,6 +9,7 @@ all:
 	$(NASM) ./src/cpu/isr.asm -f elf -o ./bin/isr.o
 	$(CC) $(CFLAGS) -c ./src/kernel/kernel.c -o ./bin/kernel.o
 	$(CC) $(CFLAGS) -c ./src/kernel/utils/utils.c -o ./bin/utils.o
+	$(CC) $(CFLAGS) -c ./src/kernel/file/file.c -o ./bin/file.o
 	$(CC) $(CFLAGS) -c ./src/cpu/idt/idt.c -o ./bin/idt.o
 	$(CC) $(CFLAGS) -c ./src/cpu/pic/pic.c -o ./bin/pic.o
 	$(CC) $(CFLAGS) -c ./src/cpu/ports/ports.c -o ./bin/ports.o
@@ -23,6 +24,7 @@ all:
 		./bin/kernel_entry.o \
 		./bin/kernel.o \
 		./bin/utils.o \
+		./bin/file.o \
 		./bin/idt.o \
 		./bin/pic.o \
 		./bin/pit.o \

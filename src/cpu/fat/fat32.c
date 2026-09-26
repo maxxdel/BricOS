@@ -6,7 +6,7 @@
 
 Fat32BootSector bootSector;
 
-void fat32_init(void){
+void fat32_init(){
     unsigned short buffer[256];
     char randomString[100];
 
@@ -44,7 +44,7 @@ unsigned int fat32_set_next_cluster(unsigned int cluster, unsigned int value){
     ata_write_sector(sectorToRead, 1, buffer);
 }
 
-static unsigned int fat32_cluster_to_LBA(unsigned int cluster){
+unsigned int fat32_cluster_to_LBA(unsigned int cluster){
     unsigned int firstDataSector = FAT32_PARTITION_START_LBA + bootSector.reservedSectorCount + (bootSector.numFat * bootSector.fatSize32);
     return firstDataSector + (cluster - 2) * bootSector.sectorsPerCluster;
 }
@@ -275,6 +275,6 @@ void fat32_update_entry(unsigned int index, unsigned int sector, Fat32DirEntry *
 
     ata_read_sector(sector, 1, buffer);
     Fat32DirEntry *entries = (Fat32DirEntry *) buffer;
-    copy_memory((char *) entry, (char *) &entries, sizeof(Fat32DirEntry));
+    copy_memory((char *) entry, (char *) &entries[index], sizeof(Fat32DirEntry));
     ata_write_sector(sector, 1, buffer);
 }
