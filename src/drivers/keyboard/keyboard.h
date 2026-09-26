@@ -21,7 +21,7 @@ static const char scanCodeToAsciiAzerty[KEYS_ON_BOARD] = {
     '\t', 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '|', '$', '\n',
     0, 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', '|', '`', 
     0, '<', 'w', 'x', 'c', 'v', 'b', 'n', ',', ';', ':', '=', 0,
-    0, ' '
+    0, 0, ' '
 };
 
 static const char scanCodeToAsciiAzertyShifted[KEYS_ON_BOARD] = {
@@ -29,7 +29,7 @@ static const char scanCodeToAsciiAzertyShifted[KEYS_ON_BOARD] = {
     '\t', 'A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '|', '*', '\n',
     0, 'Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', '%', '|', 
     0, '>', 'W', 'X', 'C', 'V', 'B', 'N', '?', '.', '/', '+', 0,
-    0, ' '
+    0, 0, ' '
 };
 
 void init_keyboard(void);

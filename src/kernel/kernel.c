@@ -14,15 +14,27 @@ void bricole(){
     pic_remap();
     __asm__ volatile ("sti");
     clear_screen();
-    printf("Bric'OS 32bits incoming");
-    print_char('\n');
-    printf("...Petit Bricoleuw");
-    print_char('\n');
-    print_char('\n');
     init_timer(50);
     init_keyboard();
    
     fat32_init();
+
+    print_char('\n');
+    printf("                BBBBB   RRRRR    III   CCCCC   ,,   OOO    SSSSS");
+    print_char('\n');
+    printf("                B    B  R   R     I   C        ,,  O   O  S");
+    print_char('\n');
+    printf("                BBBBB   RRRRR     I   C        ,,  O   O  SSSSS");
+    print_char('\n');
+    printf("                B    B  R  R      I   C        ,,  O   O      S");
+    print_char('\n');
+    printf("                BBBBB   R   R    III   CCCCC   ,,  OOO   SSSSS");
+    print_char('\n');
+    print_char('\n');
+    printf("Clique sur entree pour commencer a bricoler");
+    print_char('\n');
+
+
     fat32_create_file(bootSector.rootCluster, "TEST.TXT");
 
     fat32_create_file(bootSector.rootCluster, "HELLO.TXT");
@@ -31,7 +43,7 @@ void bricole(){
     file_write(fd, "Petit bwicoleuw", 21);
     file_close(fd);
 
-    fd = file_open(bootSector.rootCluster, "HELLO.TXT");
+    /*fd = file_open(bootSector.rootCluster, "HELLO.TXT");
     char out[32];
     unsigned int n = file_read(fd, out, 21);
     out[n] = '\0';
@@ -41,5 +53,5 @@ void bricole(){
     fat32_get_root_dir();
 
     fat32_create_file(bootSector.rootCluster, "TEST.TXT");
-    fat32_create_file(bootSector.rootCluster, "HELLO.TXT");
+    fat32_create_file(bootSector.rootCluster, "HELLO.TXT");*/
 }
