@@ -5,6 +5,8 @@
 #include "../../memory/mem.h"
 #include "../../cpu/ports/ports.h"
 #include "../../kernel/file/file.h"
+#include "../../kernel/edit/edit.h"
+#include "../../drivers/keyboard/keyboard.h"
 
 static char lineBuffer[LINE_BUFFER_SIZE];
 static int lineLength = 0;
@@ -17,11 +19,12 @@ static ShellCommands commands[] ={
     {"decapsule",       shell_command_read_file},
     {"prendNote",       shell_echo_file},
     {"SUPPRIME",        shell_file_delete},
-    {"aled",            shell_command_help}
+    {"aled",            shell_command_help},
+    {"bricole",         shell_command_editor}
 };
     
 
-static void shell_print_prompt(void){
+void shell_print_prompt(void){
     printf("bricOS");
     printf(" - ");
 }
@@ -93,8 +96,12 @@ void shell_enter(){
         printf("UN BRICOLEUR DE TON ACABIT NE SAIT MEME PAS METTRE UNE COMMANDE");
         print_char('\n');
     }
+
+    if(keyboard_get_handler().put_char == shell_put_char){
+        shell_print_prompt();
+    }
+
     lineLength = 0;
-    shell_print_prompt();
 }
 
 void shell_command_help(const char *argument){
@@ -117,6 +124,8 @@ void shell_command_help(const char *argument){
     printf("prendNote       --> Note dans un fichier. Tu rateras quand meme l'examen.");
     print_char('\n');
     printf("SUPPRIME        --> Pour supprimer un bricolage dont tu aurais honte.");
+    print_char('\n');
+    printf("bricole         --> Te donne un outil de bricoleur pour ecrire.");
     print_char('\n');
     printf("aled            --> Si tu es perdu, je peux te guider.");
     print_char('\n');
@@ -168,6 +177,8 @@ void shell_command_shutdown(const char *argument){
     printf("À bientot... Petit bricoleur");
     port_word_out(0x604, 0x2000);
     port_word_out(0xB004, 0x2000);
+    port_word_out(0x4004, 0x3400);
+    port_word_out(0x600, 0x34);
 }
 
 void shell_command_read_file(const char *argument){
@@ -249,4 +260,13 @@ void shell_file_delete(const char *argument){
 
     printf("Ton bricolage bancal a ete supprime avec succes");
     print_char('\n');
+}
+
+void shell_command_editor(const char *argument){
+    if(strlen(argument) == 0){
+        printf("Le fichier a bricoler c'est un dlc ?");
+        print_char('\n');
+        return;
+    }
+    edit_open(argument);
 }

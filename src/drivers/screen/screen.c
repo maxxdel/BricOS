@@ -24,20 +24,12 @@ void clear_screen(){
 }
 
 int printf(const char *str){
-    char *videoMemory = (char *) VIDEO_MEMORY;
     int i = 0;
-    int offset;
-
-    offset = get_cursor();
-    offset = doom_scroll(offset);
-
-    while (str[i] != '\0'){
-        videoMemory[offset + i * 2] = str[i];
-        videoMemory[offset + i * 2 + 1] = WHITE_ON_BLACK;
+    while(str[i] != '\0'){
+        print_char(str[i]);
         i++;
     }
-    set_cursor(offset + i *2);
-    return(offset + i * 2);
+    return i;
 }
 
 int doom_scroll(int cursorOffset){

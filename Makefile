@@ -10,6 +10,7 @@ all:
 	$(CC) $(CFLAGS) -c ./src/kernel/kernel.c -o ./bin/kernel.o
 	$(CC) $(CFLAGS) -c ./src/kernel/utils/utils.c -o ./bin/utils.o
 	$(CC) $(CFLAGS) -c ./src/kernel/file/file.c -o ./bin/file.o
+	$(CC) $(CFLAGS) -c ./src/kernel/edit/edit.c -o ./bin/edit.o
 	$(CC) $(CFLAGS) -c ./src/cpu/idt/idt.c -o ./bin/idt.o
 	$(CC) $(CFLAGS) -c ./src/cpu/pic/pic.c -o ./bin/pic.o
 	$(CC) $(CFLAGS) -c ./src/cpu/ports/ports.c -o ./bin/ports.o
@@ -25,6 +26,7 @@ all:
 		./bin/kernel.o \
 		./bin/utils.o \
 		./bin/file.o \
+		./bin/edit.o \
 		./bin/idt.o \
 		./bin/pic.o \
 		./bin/pit.o \

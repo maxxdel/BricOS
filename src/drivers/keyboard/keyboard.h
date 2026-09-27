@@ -9,8 +9,16 @@
 #define SCANCODE_RIGHT_SHIFT_PRESS   0x36
 #define SCANCODE_RIGHT_SHIFT_RELEASE 0xB6
 
+#define SCANCODE_LEFT_CTRL_RELEASE   0x9D
+#define SCANCODE_LEFT_CTRL_PRESS     0x1D
+// TODO: Rajouter ctrl right
+
 #define SCANCODE_BACKSPACE           0x0E
 #define SCANCODE_ENTER               0x1C
+
+#define SCANCODE_A                   0x10
+#define SCANCODE_S                   0x1F
+#define SCANCODE_X                   0x2D
 
 #define KEYS_ON_BOARD                58
 
@@ -32,4 +40,15 @@ static const char scanCodeToAsciiAzertyShifted[KEYS_ON_BOARD] = {
     0, 0, ' '
 };
 
+typedef struct HANDLER InputHandler;
+struct HANDLER{
+    void (*put_char)    (char c);
+    void (*backspace)   (void);
+    void (*enter)       (void);
+    void (*save)        (void);
+    void (*quit)        (void);
+};
+
 void init_keyboard(void);
+void keyboard_set_handler(InputHandler setHandler);
+InputHandler keyboard_get_handler(void);
