@@ -17,3 +17,7 @@ void shell_command_clear(const char *argument);
 void shell_command_list(const char *argument);
 void shell_command_create_file(const char *argument);
 void shell_command_shutdown(const char *argument);
+void shell_command_read_file(const char *argument);
+void shell_echo_file(const char *argument);
+void shell_file_delete(const char *argument);
+void shell_command_help(const char *argument);

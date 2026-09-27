@@ -278,3 +278,13 @@ void fat32_update_entry(unsigned int index, unsigned int sector, Fat32DirEntry *
     copy_memory((char *) entry, (char *) &entries[index], sizeof(Fat32DirEntry));
     ata_write_sector(sector, 1, buffer);
 }
+
+void fat32_mark_entry_deleted(unsigned int sector, unsigned int index){
+    unsigned short buffer[256];
+    ata_read_sector(sector, 1, buffer);
+
+    Fat32DirEntry *entries = (Fat32DirEntry *) buffer;
+    entries[index].name[0] = 0xE5;
+
+    ata_write_sector(sector, 1, buffer);
+}

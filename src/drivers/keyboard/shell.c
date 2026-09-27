@@ -4,15 +4,20 @@
 #include "../../cpu/fat/fat32.h"
 #include "../../memory/mem.h"
 #include "../../cpu/ports/ports.h"
+#include "../../kernel/file/file.h"
 
 static char lineBuffer[LINE_BUFFER_SIZE];
 static int lineLength = 0;
 
 static ShellCommands commands[] ={
-    {"balayer",     shell_command_clear},
-    {"presence",    shell_command_list},
-    {"bricolage",   shell_command_create_file},
-    {"dehors",      shell_command_shutdown}
+    {"balayer",         shell_command_clear},
+    {"presence",        shell_command_list},
+    {"bricolage",       shell_command_create_file},
+    {"dehors",          shell_command_shutdown},
+    {"decapsule",       shell_command_read_file},
+    {"prendNote",       shell_echo_file},
+    {"SUPPRIME",        shell_file_delete},
+    {"aled",            shell_command_help}
 };
     
 
@@ -92,6 +97,32 @@ void shell_enter(){
     shell_print_prompt();
 }
 
+void shell_command_help(const char *argument){
+    print_char('\n');
+    printf("LES COMMANDES NE SONT PAS DURES, GROS BRICOLEUR:");
+    print_char('\n');
+    print_char('\n');
+    printf("COMMANDE:           UTILISATION:");
+    print_char('\n');
+    printf("balayer         --> Pour nettoyer ton travail de bricoleur faineant.");
+    print_char('\n');
+    printf("presence        --> Pour lister ton bazar sur l'ordinateur.");
+    print_char('\n');
+    printf("bricolage       --> Pour créer un fichier aussi utile que ta carriere.");
+    print_char('\n');
+    printf("dehors          --> Pour eteindre le PC et toucher de l'herbe.");
+    print_char('\n');
+    printf("decapsule       --> Pour admirer le bricolage contenu dans un de tes fichiers.");
+    print_char('\n');
+    printf("prendNote       --> Note dans un fichier. Tu rateras quand meme l'examen.");
+    print_char('\n');
+    printf("SUPPRIME        --> Pour supprimer un bricolage dont tu aurais honte.");
+    print_char('\n');
+    printf("aled            --> Si tu es perdu, je peux te guider.");
+    print_char('\n');
+    print_char('\n');
+}
+
 void shell_command_clear(const char *argument){
     clear_screen();
 }
@@ -137,4 +168,85 @@ void shell_command_shutdown(const char *argument){
     printf("À bientot... Petit bricoleur");
     port_word_out(0x604, 0x2000);
     port_word_out(0xB004, 0x2000);
+}
+
+void shell_command_read_file(const char *argument){
+    int fd = file_open(bootSector.rootCluster, argument);
+    char out[100];
+    unsigned int n = file_read(fd, out, (sizeof(out) - 1));
+
+    if(fd == -1){
+        printf("Ce fichier n'existe pas, bricoleur alcoolique.");
+    }
+
+    out[n] = '\0';
+    file_close(fd);
+    print_char('\n');
+    printf(out);
+    print_char('\n');
+    print_char('\n');
+}
+
+void shell_echo_file(const char *argument){
+    char fileName[12];
+    char text[100];
+
+    if(strlen(argument) == 0){
+        printf("Tu as bu mes maximators ? Il manque un nom de fichier");
+        print_char('\n');
+        return;
+    }
+
+    int i = 0;
+    int j = 0;
+
+    while(argument[i] != '>' && argument[i] != 0 && i < 11){
+        fileName[i] = argument[i];
+        i++;
+    }
+
+    if(argument[i] != '>'){
+        printf("TU N'ECOUTES RIEN. Le format attendu est: prendNote nomDeFichier.ext>texte a ecrire dans le fichier");
+        print_char('\n');
+        return;
+    }
+
+    fileName[i] = '\0';
+    i++;
+    
+    while (argument[i] != '\0'){
+        text[j] = argument[i];
+        i++;
+        j++;
+    }
+    text[j] = '\0';
+
+
+    if(strlen(text) == 0){
+        printf("Il manque le contenu du fichier, bricoleur des fougeres");
+        print_char('\n');
+        return;
+    }
+
+    int file = file_open(bootSector.rootCluster, fileName);
+
+    if(file == -1){
+        fat32_create_file(bootSector.rootCluster, fileName);
+    }
+
+    file = file_open(bootSector.rootCluster, fileName);
+    file_write(file, text, strlen(text));
+    file_close(file);
+}
+
+void shell_file_delete(const char *argument){
+    int file = file_delete(bootSector.rootCluster, argument);
+    if(file == 0){
+        printf("Le fichier n'existait deja pas, bricoleur des montagnes");
+        print_char('\n');
+        return;
+    }
+
+    printf("Ton bricolage bancal a ete supprime avec succes");
+    print_char('\n');
 }

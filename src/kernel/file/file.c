@@ -138,3 +138,22 @@ void file_close(int fileDescriptor){
     fat32_update_entry(file->dirEntryIndex, file->dirEntrySector, &entry);
     file->isOpen = 0;
 }
+
+int file_delete(unsigned int dirCluster, const char *name){
+    Fat32DirEntry entry;
+    unsigned int sector, index;
+
+    if(!fat32_find_entry(dirCluster, name, &entry, &sector, &index)){
+        return 0;
+    }
+
+    unsigned int startCluster = fat32_get_entry_cluster(&entry);
+
+    if(startCluster != 0){
+        fat32_ziak_cluster(startCluster);
+    }
+
+    fat32_mark_entry_deleted(sector, index);
+
+    return 1;
+}

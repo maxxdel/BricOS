@@ -84,3 +84,4 @@ void fat32_string_to_entry_name(const char *name, unsigned char out[11]);
 void fat32_ziak_cluster(unsigned int startCluster);
 void fat32_make_entry(Fat32DirEntry *entry, const char *name, unsigned char attr, unsigned int cluster, unsigned int size);
 void fat32_update_entry(unsigned int index, unsigned int sector, Fat32DirEntry *entry);
+void fat32_mark_entry_deleted(unsigned int sector, unsigned int index);
