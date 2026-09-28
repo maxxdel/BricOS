@@ -152,6 +152,14 @@ void shell_right_key(){
     cursorPosition++;
 }
 
+void shell_key_up(){
+    // TODO : Recup les anciennes commandes
+}
+
+void shell_key_down(){
+    // TODO : Même Recup les commandes suivantes
+}
+
 void shell_command_help(const char *argument){
     print_char('\n');
     printf("LES COMMANDES NE SONT PAS DURES, GROS BRICOLEUR:");
@@ -317,4 +325,13 @@ void shell_command_editor(const char *argument){
         return;
     }
     edit_open(argument);
+}
+
+void shell_shortcut_start(){
+    if(cursorPosition == 0){
+        return;
+    }
+
+    set_cursor(get_cursor() - (cursorPosition * 2));
+    cursorPosition = 0;
 }

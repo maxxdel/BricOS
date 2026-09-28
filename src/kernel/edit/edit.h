@@ -20,3 +20,5 @@ void edit_quit(void);
 void edit_open(const char *name);
 void edit_left_key(void);
 void edit_right_key(void);
+void edit_key_up(void);
+void edit_key_down(void);

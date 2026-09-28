@@ -157,3 +157,8 @@ int file_delete(unsigned int dirCluster, const char *name){
 
     return 1;
 }
+
+void file_truncate(int fileDescriptor){
+    if(fileDescriptor < 0 || fileDescriptor >= MAX_FILES_OPEN || !(openFiles[fileDescriptor].isOpen)){return;}
+    openFiles[fileDescriptor].fileSize = openFiles[fileDescriptor].position;
+}

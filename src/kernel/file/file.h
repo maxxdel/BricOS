@@ -20,3 +20,4 @@ unsigned int file_read(int fileDescriptor, char *buffer, unsigned int size);
 unsigned int file_write(int fileDescriptor, char *buffer, unsigned int size);
 void file_close(int fileDescriptor);
 int file_delete(unsigned int dirCluster, const char *name);
+void file_truncate(int fileDescriptor);

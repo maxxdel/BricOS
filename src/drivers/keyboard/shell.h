@@ -15,6 +15,10 @@ void shell_enter(void);
 void shell_print_prompt(void);
 void shell_right_key(void);
 void shell_left_key(void);
+void shell_key_up(void);
+void shell_key_down(void);
+
+void shell_shortcut_start(void);
 
 void shell_command_clear(const char *argument);
 void shell_command_list(const char *argument);

@@ -8,7 +8,18 @@ static int shiftPressed = 0;
 static int ctrlPressed  = 0;
 static int e0flag       = 0;
 
-static InputHandler keyboardHandler = {shell_put_char, shell_backspace, shell_enter, shell_left_key, shell_right_key, 0, 0, 0, 0};
+static InputHandler keyboardHandler = {
+    shell_put_char, 
+    shell_backspace, 
+    shell_enter, 
+    shell_left_key, 
+    shell_right_key, 
+    shell_key_up, 
+    shell_key_down, 
+    0, 
+    0,
+    shell_shortcut_start 
+};
 
 void keyboard_set_handler(InputHandler setHandler){
     keyboardHandler = setHandler;
@@ -30,8 +41,14 @@ static void keyboard_callback(Registers *regs){
         case SCANCODE_LEFT_KEY:
             keyboardHandler.left();
             break;
-            case SCANCODE_RIGHT_KEY:
+        case SCANCODE_RIGHT_KEY:
             keyboardHandler.right();
+            break;
+        case SCANCODE_UPPER_KEY:
+            keyboardHandler.up();
+            break;
+        case SCANCODE_LOWER_KEY:
+            keyboardHandler.down();
             break;
         
         default:
@@ -84,12 +101,10 @@ static void keyboard_callback(Registers *regs){
             return;
         }
 
-        // Ça fait tout buger, je la retravaille quand j'ai le temps
-        /*else if(ctrlPressed && scancode == SCANCODE_A){
-            int cursor = get_cursor();
-            set_cursor(cursor - (cursor % (SCREEN_WIDTH * 2)) + 18);
-            return; //probablement le return qui casse v'la les trucs d'ailleurs
-        }*/
+        else if(ctrlPressed && scancode == SCANCODE_A){
+            keyboardHandler.start();
+            return;
+        }
 
         else if (ctrlPressed && scancode == SCANCODE_S){
             if(keyboardHandler.save){

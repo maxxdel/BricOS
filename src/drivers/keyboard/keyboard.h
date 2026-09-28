@@ -55,6 +55,7 @@ struct HANDLER{
     void (*down)        (void);
     void (*save)        (void);
     void (*quit)        (void);
+    void (*start)       (void);
 };
 
 void init_keyboard(void);
