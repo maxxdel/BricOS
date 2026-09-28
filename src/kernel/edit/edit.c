@@ -7,10 +7,19 @@
 #include "../../memory/mem.h"
 #include "../utils/utils.h"
 
-InputHandler nanoHandler = {edit_put_char, edit_backspace, edit_enter, 0, 0, 0, 0, edit_save, edit_quit};
+InputHandler nanoHandler = {
+    edit_put_char, edit_backspace, 
+    edit_enter, edit_left_key, 
+    edit_right_key, 
+    0, 
+    0, 
+    edit_save, 
+    edit_quit
+};
 
 static char fileBuffer[FILE_BUFFER_SIZE];
 static int fileLength = 0;
+static int cursorPosition = 0;
 static char fileName[13];
 
 void edit_put_char(char c){
@@ -18,18 +27,43 @@ void edit_put_char(char c){
         return;
     }
 
-    fileBuffer[fileLength++] = c;
-    print_char(c);
+    for(int i = fileLength; i > cursorPosition; i--){
+        fileBuffer[i] = fileBuffer[i - 1];
+    }
+
+    fileBuffer[cursorPosition] = c;
+    fileLength++;
+
+    for(int i = cursorPosition; i < fileLength; i++){
+        print_char(fileBuffer[i]);
+    }
+
+    cursorPosition++;
+
+    set_cursor(get_cursor() - (fileLength - cursorPosition) * 2);
 }
 
 void edit_backspace(){
-
-    if(fileLength == 0){
+    if(cursorPosition == 0){
         return;
     }
 
-    fileBuffer[--fileLength] = '\0';
-    erase_char();
+    for(int i = cursorPosition - 1; i < fileLength - 1; i++){
+        fileBuffer[i] = fileBuffer[i + 1];
+    }
+
+    fileLength--;
+    cursorPosition--;
+    fileBuffer[fileLength] = '\0';
+
+    set_cursor(get_cursor() - 2);
+
+    for(int i = cursorPosition; i < fileLength; i++){
+        print_char(fileBuffer[i]);
+    }
+
+    print_char(' ');
+    set_cursor(get_cursor() - ((fileLength - cursorPosition) + 1) * 2);
 }
 
 void edit_enter(){
@@ -79,4 +113,26 @@ void edit_open(const char *name){
     clear_screen();
     printf(fileBuffer);
     keyboard_set_handler(nanoHandler);
+}
+
+void edit_left_key(){
+    int cursorOffset;
+
+    if(cursorPosition == 0){
+        return;
+    }
+    cursorOffset = get_cursor() - 2;
+    set_cursor(cursorOffset);
+    cursorPosition--;
+}
+
+void edit_right_key(){
+    int cursorOffset;
+
+    if(cursorPosition == fileLength){
+        return;
+    }
+    cursorOffset = get_cursor() + 2;
+    set_cursor(cursorOffset);
+    cursorPosition++;
 }

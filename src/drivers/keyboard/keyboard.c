@@ -19,6 +19,24 @@ static void keyboard_callback(Registers *regs){
 
     if(scancode == 0xE0){
         e0flag = 1;
+        return;
+    }
+
+    else if(e0flag == 1){
+        e0flag = 0;
+        int cursor;
+
+        switch (scancode){
+        case SCANCODE_LEFT_KEY:
+            keyboardHandler.left();
+            break;
+            case SCANCODE_RIGHT_KEY:
+            keyboardHandler.right();
+            break;
+        
+        default:
+            break;
+        }
     }
 
     if(scancode == SCANCODE_LEFT_SHIFT_PRESS || scancode == SCANCODE_RIGHT_SHIFT_PRESS){
@@ -85,24 +103,6 @@ static void keyboard_callback(Registers *regs){
                 keyboardHandler.quit();
             }
             return;
-        }
-
-        else if(e0flag == 1){
-            e0flag = 0;
-
-            int cursor;
-
-            switch (scancode){
-            case SCANCODE_LEFT_KEY:
-                keyboardHandler.left();
-                break;
-            case SCANCODE_RIGHT_KEY:
-                keyboardHandler.right();
-                break;
-            
-            default:
-                break;
-            }
         }
 
         else if(shiftPressed == 1){

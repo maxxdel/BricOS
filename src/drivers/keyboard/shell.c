@@ -10,8 +10,6 @@
 
 static char lineBuffer[LINE_BUFFER_SIZE];
 static int lineLength = 0;
-// Changer les lineLength pour cursorPosition, et décaler les éléments à l'insertion
-// Faire les fleches haut et bas
 static int cursorPosition = 0;
 
 static ShellCommands commands[] ={
@@ -33,23 +31,47 @@ void shell_print_prompt(void){
 }
 
 void shell_put_char(char c){
-    
     if (lineLength >= LINE_BUFFER_SIZE - 1){
         return;
     }
 
-    lineBuffer[lineLength++] = c;
-    print_char(c);
+    for(int i = lineLength; i > cursorPosition; i--){
+        lineBuffer[i] = lineBuffer[i - 1];
+    }
+
+    lineBuffer[cursorPosition] = c;
+    lineLength++;
+
+    for(int i = cursorPosition; i < lineLength; i++){
+        print_char(lineBuffer[i]);
+    }
+
+    cursorPosition++;
+
+    set_cursor(get_cursor() - (lineLength - cursorPosition) * 2);
 }
 
 void shell_backspace(){
-
-    if(lineLength == 0){
+    if(cursorPosition == 0){
         return;
     }
 
-    lineBuffer[--lineLength] = '\0';
-    erase_char();
+    for(int i = cursorPosition - 1; i < lineLength - 1; i++){
+        lineBuffer[i] = lineBuffer[i + 1];
+    }
+
+    lineLength--;
+    cursorPosition--;
+    lineBuffer[lineLength] = '\0';
+
+    set_cursor(get_cursor() - 2);
+
+    for(int i = cursorPosition; i < lineLength; i++){
+        print_char(lineBuffer[i]);
+    }
+
+    print_char(' ');
+    set_cursor(get_cursor() - ((lineLength - cursorPosition) + 1) * 2);
 }
 
 void shell_parse_line(char *command, char *argument){
@@ -105,22 +127,29 @@ void shell_enter(){
     }
 
     lineLength = 0;
+    cursorPosition = 0;
 }
 
 void shell_left_key(){
-    if(lineLength == 0){
+    int cursorOffset;
+
+    if(cursorPosition == 0){
         return;
     }
-    cursorPosition = get_cursor() - 2;
-    set_cursor(cursorPosition);
+    cursorOffset = get_cursor() - 2;
+    set_cursor(cursorOffset);
+    cursorPosition--;
 }
 
 void shell_right_key(){
-    if((lineLength + 1) == '\0'){
+    int cursorOffset;
+
+    if(cursorPosition == lineLength){
         return;
     }
-    cursorPosition = get_cursor() + 2;
-    set_cursor(cursorPosition);
+    cursorOffset = get_cursor() + 2;
+    set_cursor(cursorOffset);
+    cursorPosition++;
 }
 
 void shell_command_help(const char *argument){
@@ -173,7 +202,7 @@ void shell_command_create_file(const char *argument){
     }
 
     if(strlen(argument) > 12){
-        printf("Ton nom de fichier est trop long, bricoleur malhabile");
+        printf("Ton nom de fichier est trop long, bricoleur malhabile.\n");
         return;
     }
 
