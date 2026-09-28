@@ -7,7 +7,7 @@
 #include "../../memory/mem.h"
 #include "../utils/utils.h"
 
-InputHandler nanoHandler = {edit_put_char, edit_backspace, edit_enter, edit_save, edit_quit};
+InputHandler nanoHandler = {edit_put_char, edit_backspace, edit_enter, 0, 0, 0, 0, edit_save, edit_quit};
 
 static char fileBuffer[FILE_BUFFER_SIZE];
 static int fileLength = 0;

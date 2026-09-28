@@ -10,6 +10,9 @@
 
 static char lineBuffer[LINE_BUFFER_SIZE];
 static int lineLength = 0;
+// Changer les lineLength pour cursorPosition, et décaler les éléments à l'insertion
+// Faire les fleches haut et bas
+static int cursorPosition = 0;
 
 static ShellCommands commands[] ={
     {"balayer",         shell_command_clear},
@@ -102,6 +105,22 @@ void shell_enter(){
     }
 
     lineLength = 0;
+}
+
+void shell_left_key(){
+    if(lineLength == 0){
+        return;
+    }
+    cursorPosition = get_cursor() - 2;
+    set_cursor(cursorPosition);
+}
+
+void shell_right_key(){
+    if((lineLength + 1) == '\0'){
+        return;
+    }
+    cursorPosition = get_cursor() + 2;
+    set_cursor(cursorPosition);
 }
 
 void shell_command_help(const char *argument){

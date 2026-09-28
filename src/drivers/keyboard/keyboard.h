@@ -11,7 +11,11 @@
 
 #define SCANCODE_LEFT_CTRL_RELEASE   0x9D
 #define SCANCODE_LEFT_CTRL_PRESS     0x1D
-// TODO: Rajouter ctrl right
+
+#define SCANCODE_UPPER_KEY           0x48
+#define SCANCODE_LOWER_KEY           0x50
+#define SCANCODE_LEFT_KEY            0x4B
+#define SCANCODE_RIGHT_KEY           0x4D
 
 #define SCANCODE_BACKSPACE           0x0E
 #define SCANCODE_ENTER               0x1C
@@ -45,6 +49,10 @@ struct HANDLER{
     void (*put_char)    (char c);
     void (*backspace)   (void);
     void (*enter)       (void);
+    void (*left)        (void);
+    void (*right)       (void);
+    void (*up)          (void);
+    void (*down)        (void);
     void (*save)        (void);
     void (*quit)        (void);
 };

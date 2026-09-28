@@ -6,8 +6,9 @@
 
 static int shiftPressed = 0;
 static int ctrlPressed  = 0;
+static int e0flag       = 0;
 
-static InputHandler keyboardHandler = {shell_put_char, shell_backspace, shell_enter, 0, 0};
+static InputHandler keyboardHandler = {shell_put_char, shell_backspace, shell_enter, shell_left_key, shell_right_key, 0, 0, 0, 0};
 
 void keyboard_set_handler(InputHandler setHandler){
     keyboardHandler = setHandler;
@@ -15,6 +16,10 @@ void keyboard_set_handler(InputHandler setHandler){
 
 static void keyboard_callback(Registers *regs){
     unsigned char scancode = port_byte_in(KEYBOARD_DATA_PORT);
+
+    if(scancode == 0xE0){
+        e0flag = 1;
+    }
 
     if(scancode == SCANCODE_LEFT_SHIFT_PRESS || scancode == SCANCODE_RIGHT_SHIFT_PRESS){
         shiftPressed = 1;
@@ -80,6 +85,24 @@ static void keyboard_callback(Registers *regs){
                 keyboardHandler.quit();
             }
             return;
+        }
+
+        else if(e0flag == 1){
+            e0flag = 0;
+
+            int cursor;
+
+            switch (scancode){
+            case SCANCODE_LEFT_KEY:
+                keyboardHandler.left();
+                break;
+            case SCANCODE_RIGHT_KEY:
+                keyboardHandler.right();
+                break;
+            
+            default:
+                break;
+            }
         }
 
         else if(shiftPressed == 1){
