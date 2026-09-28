@@ -42,7 +42,7 @@ all:
 # Pour remplir le kernel pendant les tests
 	dd if=./bin/kernel.bin of=./bin/kernel_padded.bin bs=512 conv=sync
 # Voir ligne 42 bootloader
-	truncate -s 20480 ./bin/kernel_padded.bin
+	truncate -s 25200 ./bin/kernel_padded.bin
 	cat ./bin/bootloader.bin ./bin/kernel_padded.bin > ./bin/os.img
 # Test pour FAT32	
 	dd if=/dev/zero of=./bin/fat32.img bs=1m count=64

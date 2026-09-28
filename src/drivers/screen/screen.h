@@ -4,6 +4,7 @@
 #define SCREEN_HEIGHT 25
 #define SCREEN_WIDTH 80
 #define WHITE_ON_BLACK 0x0F
+#define BLACK_ON_WHITE 0x70
 
 #define VGA_INDEX_PORT 0x3D4
 #define VGA_DATA_PORT 0x3D5

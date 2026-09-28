@@ -21,7 +21,7 @@ static ShellCommands commands[] ={
     {"prendNote",       shell_echo_file},
     {"SUPPRIME",        shell_file_delete},
     {"aled",            shell_command_help},
-    {"bricole",         shell_command_editor}
+    {"briquedit",         shell_command_editor}
 };
     
 
@@ -181,7 +181,7 @@ void shell_command_help(const char *argument){
     print_char('\n');
     printf("SUPPRIME        --> Pour supprimer un bricolage dont tu aurais honte.");
     print_char('\n');
-    printf("bricole         --> Te donne un outil de bricoleur pour ecrire.");
+    printf("briquedit       --> Te donne un burin de bricoleur pour ecrire.");
     print_char('\n');
     printf("aled            --> Si tu es perdu, je peux te guider.");
     print_char('\n');

@@ -8,9 +8,16 @@ un point à faire dans le futur, mais là je voulais avancer, donc y'a un
 buffer horrible, et pas de gestion dynamique. Si quelqu'un pass par là, 
 c'est la plus gross honte de mon projet, mais j'ai réalisé l'utilité un 
 peu tard. Bon courage pour fix. */
-// PS : Ha d'ailleurs cet éditeur c'est le bordel, la moitié des trucs marchent pas ou explosent. Good luck.
+// PS : Ha d'ailleurs cet éditeur c'est le bordel, la moitié des trucs marchent pas ou explosent. Le footer bug. 
+// Good luck.
 
 #define FILE_BUFFER_SIZE 2048
+
+#define GUTTER_WIDTH 3
+#define TEXT_LEFT    GUTTER_WIDTH
+#define TEXT_TOP     1
+#define TEXT_WIDTH   (SCREEN_WIDTH - GUTTER_WIDTH - 3)
+#define TEXT_HEIGHT  (SCREEN_HEIGHT - 1)
 
 void edit_put_char(char c);
 void edit_backspace(void);
