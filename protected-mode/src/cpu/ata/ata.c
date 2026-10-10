@@ -27,12 +27,9 @@ void ata_read_sector(unsigned int lba, unsigned char sectorCount, unsigned short
     int i;
     unsigned char status;
 
-    // Sur un vrai hardware, attendre le reset de BSY et DRQ du bus ~400ns
-    // Ça peut être utile de le mettre en fin de lecture/écriture de secteur
-    // À vérifier sur test physique
-    /*for (i = 0; i < 5; i++){
+    for (i = 0; i < 5; i++){
         port_byte_in(ATA_PRIMARY_CONTROL);
-    }*/
+    }
 
     do{
         status = port_byte_in(ATA_PRIMARY_STATUS);

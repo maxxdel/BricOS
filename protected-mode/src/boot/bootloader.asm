@@ -73,5 +73,17 @@ BOOT_DRIVE db 0
 MSG_PROTECTED_MODE db "Succesfully entered the protected mode", 0
 message db "Chargement du bootloader en mode reel reussi", 0
 
-times 510-($-$$) db 0
+times 444-($-$$) db 0
+
+partition_table: ;mbr simpliste à rebosser
+	db 0x80
+	db 0xFE, 0xFF, 0xFF
+	db 0x0C
+	db 0xFE, 0xFF, 0xFF
+	dd 2048              ; LBA de début
+	dd 131072            ; nombre de secteurs
+	times 48 db 0
+
+dw 0xAA55
+
 dw 0xAA55
